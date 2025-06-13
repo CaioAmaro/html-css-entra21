@@ -1,0 +1,28 @@
+thead tr:first-child{
+    background-color: #2bd800;
+}
+
+tbody tr:nth-child(odd){
+    background-color: #059e4a18;
+}
+
+tbody tr:nth-child(-n + 4) td:first-child{
+    background-color: #00ff55;
+}
+
+tbody tr:nth-child(n + 5):nth-child(-n + 6) td:first-child{
+    background-color: #00ff559c;
+}
+
+tbody tr:nth-child(n + 7):nth-child(-n + 12) td:first-child{
+    background-color: #00ff553a;
+}
+
+tbody tr:nth-child(n + 17):nth-child(-n + 20) td:first-child{
+    background-color: #ff0000;
+}
+
+table{
+    width: 25%;
+    text-align: center;
+}

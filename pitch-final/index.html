@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Economiza Blu - Mockup</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .screen {
+            display: none;
+        }
+        .screen.active {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        /* Efeito de carregamento para a Splash Screen */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 4px solid #4f46e5;
+            width: 40px;
+            height: 40px;
+            animation: spin 2s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-200 flex items-center justify-center min-h-screen p-4">
+
+    <!-- Estrutura do Celular -->
+    <div class="w-full max-w-sm h-[800px] bg-white rounded-3xl shadow-2xl border-8 border-black overflow-hidden flex flex-col">
+        <!-- Barra de Status (Simulada) -->
+        <div class="bg-white px-4 py-1 flex justify-between items-center text-xs text-black font-semibold">
+            <span>9:41</span>
+            <div class="flex items-center space-x-1">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- Conteúdo da Tela -->
+        <div class="flex-grow overflow-y-auto">
+
+            <!-- 1. Tela de Boas-vindas / Splash Screen -->
+            <div id="screen-splash" class="screen active bg-indigo-600 text-white justify-center items-center p-8">
+                <i class="fas fa-shopping-basket fa-4x mb-4"></i>
+                <h1 class="text-4xl font-bold">Economiza</h1>
+                <p class="text-lg">Blumenau</p>
+                <div class="loader mt-12"></div>
+                <p class="mt-4 text-sm">Carregando mercados...</p>
+            </div>
+
+            <!-- 2. Tela de Cadastro/Login -->
+            <div id="screen-login" class="screen bg-gray-50 p-6 justify-center">
+                <div class="w-full">
+                    <div class="text-center mb-10">
+                        <i class="fas fa-shopping-basket fa-3x mb-3 text-indigo-600"></i>
+                        <h1 class="text-3xl font-bold text-gray-800">Economiza Blu</h1>
+                        <p class="text-gray-500">Compare preços, economize tempo.</p>
+                    </div>
+
+                    <!-- Formulário de Login (padrão) -->
+                    <div id="login-form">
+                        <input type="email" placeholder="E-mail" class="w-full p-3 mb-4 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" value="usuario@email.com">
+                        <input type="password" placeholder="Senha" class="w-full p-3 mb-4 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" value="123456">
+                        <div class="text-red-500 text-sm mb-4 hidden" id="login-error">E-mail ou senha inválidos.</div>
+                        <button onclick="navigate('screen-dashboard')" class="w-full bg-indigo-600 text-white p-3 rounded-lg font-semibold hover:bg-indigo-700 transition">Entrar</button>
+                        <p class="text-center mt-6 text-gray-600">
+                            Não tem uma conta? <a href="#" onclick="toggleAuth('register')" class="text-indigo-600 font-semibold"iv>
+
+                    <!-- Formulário de Cadastro (oculto) -->
+                    <div id="register-form" class="hidden">
+                        <input type="text" placeholder="Nome Completo" class="w-full p-3 mb-4 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <input type="email" placeholder="E-mail" class="w-full p-3 mb-4 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <input type="password" placeholder="Senha" class="w-full p-3 mb-4 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <input type="text" placeholder="Localização (Ex: Itoupava Norte)" class="w-full p-3 mb-4 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <button onclick="navigate('screen-dashboard')" class="w-full bg-indigo-600 text-white p-3 rounded-lg font-semibold hover:bg-indigo-700 transition">Criar Conta</button>
+                        <p class="text-center mt-6 text-gray-600">
+                            Já tem uma conta? <a href="#" onclick="toggleAuth('login')" class="text-indigo-600 font-semibold">Faça Login</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 3. Tela Principal / Dashboard -->
+            <div id="screen-dashboard" class="screen bg-gray-50 flex-col p-6">
+                <header class="mb-8">
+                    <h1 class="text-2xl font>Cadastre-se</a>
+                        </p>
+                    </d-bold text-gray-800">Olá, Usuário!</h1>
+                    <p class="text-gray-500">Pronto para economizar hoje?</p>
+                </header>
+                
+                <div class="bg-indigo-600 text-white p-6 rounded-xl shadow-lg mb-8">
+                    <p class="text-sm opacity-80">Sua economia média este mês</p>
+                    <p class="text-4xl font-bold">R$ 78,50</p>
+                </div>
+                
+                <h2 class="font-semibold text-gray-700 mb-4">O que você deseja fazer?</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="navigate('screen-create-list')" class="bg-white p-4 rounded-xl shadow text-left hover:bg-gray-100 transition">
+                        <i class="fas fa-plus-circle text-2xl text-indigo-500 mb-2"></i>
+                        <h3 class="font-semibold text-gray-800">Criar Nova Lista</h3>
+                    </button>
+                    <button onclick="navigate('screen-history')" class="bg-white p-4 rounded-xl shadow text-left hover:bg-gray-100 transition">
+                        <i class="fas fa-history text-2xl text-indigo-500 mb-2"></i>
+                        <h3 class="font-semibold text-gray-800">Ver Listas Anteriores</h3>
+                    </button>
+                    <button onclick="navigate('screen-promotions')" class="bg-white p-4 rounded-xl shadow text-left hover:bg-gray-100 transition">
+                        <i class="fas fa-tags text-2xl text-indigo-500 mb-2"></i>
+                        <h3 class="font-semibold text-gray-800">Ver Promoções</h3>
+                    </button>
+                     <button onclick="navigate('screen-add-market')" class="bg-white p-4 rounded-xl shadow text-left hover:bg-gray-100 transition">
+                        <i class="fas fa-store text-2xl text-indigo-500 mb-2"></i>
+                        <h3 class="font-semibold text-gray-800">Cadastrar Mercado</h3>
+                    </button>
+                    <button onclick="navigate('screen-add-product')" class="bg-white p-4 rounded-xl shadow text-left hover:bg-gray-100 transition">
+                        <i class="fas fa-barcode text-2xl text-indigo-500 mb-2"></i>
+                        <h3 class="font-semibold text-gray-800">Cadastrar Produto</h3>
+                    </button>
+                     <button onclick="navigate('screen-update-price')" class="bg-white p-4 rounded-xl shadow text-left hover:bg-gray-100 transition">
+                        <i class="fas fa-dollar-sign text-2xl text-indigo-500 mb-2"></i>
+                        <h3 class="font-semibold text-gray-800">Atualizar Preços</h3>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 4. Tela de Cadastro de Mercado -->
+            <div id="screen-add-market" class="screen bg-gray-50 flex-col">
+                <header class="bg-white shadow-sm p-4 flex items-center">
+                    <button onclick="navigate('screen-dashboard')" class="text-gray-600"><i class="fas fa-arrow-left"></i></button>
+                    <h1 class="text-lg font-semibold text-gray-800 ml-4">Cadastrar Mercado</h1>
+                </header>
+                <div class="p-6 flex-grow">
+                    <div class="mb-4">
+                        <label class="text-sm font-medium text-gray-700">Nome do Mercado</label>
+                        <input type="text" class="w-full p-3 mt-1 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div class="mb-4">
+                        <label class="text-sm font-medium text-gray-700">Endereço (Rua, Número)</label>
+                        <input type="text" class="w-full p-3 mt-1 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                     <div class="mb-4">
+                        <label class="text-sm font-medium text-gray-700">Bairro</label>
+                        <input type="text" class="w-full p-3 mt-1 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <button class="w-full bg-indigo-600 text-white p-3 rounded-lg font-semibold hover:bg-indigo-700 transition mt-4">Salvar Mercado</button>
+                </div>
+            </div>
+
+            <!-- 5. Tela de Cadastro de Produto -->
+            <div id="screen-add-product" class="screen bg-gray-50 flex-col">
+                 <header class="bg-white shadow-sm p-4 flex items-center">
+                    <button onclick="navigate('screen-dashboard')" class="text-gray-600"><i class="fas fa-arrow-left"></i></button>
+                    <h1 class="text-lg font-semibold text-gray-800 ml-4">Cadastrar Produto</h1>
+                </header>
+                 <div class="p-6 flex-grow">
+                    <div class="mb-4">
+                        <label class="text-sm font-medium text-gray-700">Nome do Produto</label>
+                        <input type="text" placeholder="Ex: Arroz Parboilizado 1kg" class="w-full p-3 mt-1 bg-white border border-gray-300 rounded-lg">
+                    </div>
+                    <div class="mb-4">
+                        <label class="text-sm font-medium text-gray-700">Unidade de Medida</label>
+                        <select class="w-full p-3 mt-1 bg-white border border-gray-300 rounded-lg">
+                            <option>Unidade (UN)</option>
+                            <option>Quilograma (KG)</option>
+                            <option>Litro (L)</option>
+                            <option>Pacote (PC)</option>
+                        </select>
+                    </div>
+                     <div class="mb-4">
+                        <label class="text-sm font-medium text-gray-700">Mercado</label>
+                         <select class="w-full p-3 mt-1 bg-white border border-gray-300 rounded-lg">
+                            <option>Giassi</option>
+                            <option>Angeloni</option>
+                            <option>Cooper</option>
+                        </select>
+                    </div>
+                     <div class="mb-4">
+                        <label class="text-sm font-medium text-gray-700">Valor (R$)</label>
+                        <input type="number" placeholder="5.99" class="w-full p-3 mt-1 bg-white border border-gray-300 rounded-lg">
+                    </div>
+                    <button class="w-full bg-indigo-600 text-white p-3 rounded-lg font-semibold hover:bg-indigo-700 transition mt-4">Salvar Produto</button>
+                 </div>
+            </div>
+
+            <!-- 6. Tela de Criação de Lista -->
+            <div id="screen-create-list" class="screen bg-gray-50 flex-col">
+                <header class="bg-white shadow-sm p-4 flex items-center">
+                    <button onclick="navigate('screen-dashboard')" class="text-gray-600"><i class="fas fa-arrow-left"></i></button>
+                    <h1 class="text-lg font-semibold text-gray-800 ml-4">Criar Lista</h1>
+                </header>
+                <div class="p-6 flex-grow">
+                     <div class="mb-4">
+                        <label class="text-sm font-medium text-gray-700">Nome da Lista</label>
+                        <input type="text" value="Compras da Semana" class="w-full p-3 mt-1 bg-white border border-gray-300 rounded-lg">
+                    </div>
+                     <div class="relative mb-6">
+                        <label class="text-sm font-medium text-gray-700">Adicionar Produto</label>
+                         <input type="text" placeholder="Digite o nome do produto..." class="w-full p-3 mt-1 bg-white border border-gray-300 rounded-lg pr-10">
+                         <i class="fas fa-search absolute right-3 top-10 text-gray-400"></i>
+                     </div>
+
+                    <h3 class="font-semibold text-gray-700 mb-2">Itens na Lista</h3>
+                    <div class="space-y-3">
+                        <!-- Item 1 -->
+                         <div class="flex items-center justify-between bg-white p-3 rounded-lg shadow-sm">
+                            <span>Arroz Parboilizado 1kg</span>
+                            <div class="flex items-center gap-2">
+                                <input type="number" value="2" class="w-16 text-center border rounded-md">
+                                <button class="text-red-500"><i class="fas fa-trash"></i></button>
+                            </div>
+                         </div>
+                        <!-- Item 2 -->
+                        <div class="flex items-center justify-between bg-white p-3 rounded-lg shadow-sm">
+                            <span>Feijão Carioca 1kg</span>
+                            <div class="flex items-center gap-2">
+                                <input type="number" value="1" class="w-16 text-center border rounded-md">
+                                <button class="text-red-500"><i class="fas fa-trash"></i></button>
+                            </div>
+                         </div>
+                        <!-- Item 3 -->
+                        <div class="flex items-center justify-between bg-white p-3 rounded-lg shadow-sm">
+                            <span>Leite Integral 1L</span>
+                            <div class="flex items-center gap-2">
+                                <input type="number" value="6" class="w-16 text-center border rounded-md">
+                                <button class="text-red-500"><i class="fas fa-trash"></i></button>
+                            </div>
+                         </div>
+                    </div>
+                </div>
+                <footer class="p-4 bg-white border-t">
+                     <button onclick="navigate('screen-comparison')" class="w-full bg-green-500 text-white p-3 rounded-lg font-semibold hover:bg-green-600 transition">
+                         <i class="fas fa-balance-scale"></i> Comparar Preços
+                    </button>
+                </footer>
+            </div>
+            
+            <!-- 7. Tela de Comparação de Preços -->
+            <div id="screen-comparison" class="screen bg-gray-50 flex-col">
+                <header class="bg-white shadow-sm p-4 flex items-center">
+                    <button onclick="navigate('screen-create-list')" class="text-gray-600"><i class="fas fa-arrow-left"></i></button>
+                    <h1 class="text-lg font-semibold text-gray-800 ml-4">Melhor Opção</h1>
+                </header>
+                <div class="p-6">
+                    <div class="bg-green-100 border-2 border-green-500 p-4 rounded-xl text-center mb-6 shadow-lg">
+                        <p class="text-green-800 font-semibold">Melhor preço no</p>
+                        <p class="text-3xl font-bold text-green-900">Giassi Supermercados</p>
+                        <p class="text-lg text-green-800">Total: <span class="font-bold">R$ 52,30</span></p>
+                        <p class="mt-2 text-sm text-green-700">Você economiza <span class="font-bold">R$ 11,40</span></p>
+                    </div>
+
+                    <h3 class="font-semibold text-gray-700 mb-2">Outras Opções</h3>
+                    <div class="space-y-3">
+                         <div class="bg-white p-4 rounded-lg shadow-sm flex justify-between items-center">
+                             <div>
+                                <p class="font-bold text-gray-800">Angeloni</p>
+                                <p class="text-sm text-gray-500">Itoupava Norte</p>
+                             </div>
+                             <p class="text-lg font-semibold text-gray-700">R$ 58,90</p>
+                         </div>
+                          <div class="bg-white p-4 rounded-lg shadow-sm flex justify-between items-center">
+                             <div>
+                                <p class="font-bold text-gray-800">Cooper</p>
+                                <p class="text-sm text-gray-500">Garcia</p>
+                             </div>
+                             <p class="text-lg font-semibold text-gray-700">R$ 63,70</p>
+                         </div>
+                    </div>
+
+                    <div class="mt-8">
+                         <h3 class="font-semibold text-gray-700 mb-2">Filtros</h3>
+                         <select class="w-full p-3 mt-1 bg-white border border-gray-300 rounded-lg">
+                            <option>Filtrar por Bairro...</option>
+                            <option>Itoupava Norte</option>
+                            <option>Garcia</option>
+                             <option>Centro</option>
+                        </select>
+                    </div>
+                </div>
+                 <footer class="p-4 bg-white border-t mt-auto">
+                     <button onclick="navigate('screen-list-details')" class="w-full bg-indigo-600 text-white p-3 rounded-lg font-semibold hover:bg-indigo-700 transition">
+                         Ver Detalhes da Lista
+                    </button>
+                </footer>
+            </div>
+            
+            <!-- 8. Tela de Detalhes da Lista -->
+             <div id="screen-list-details" class="screen bg-gray-50 flex-col">
+                <header class="bg-white shadow-sm p-4 flex items-center">
+                    <button onclick="navigate('screen-comparison')" class="text-gray-600"><i class="fas fa-arrow-left"></i></button>
+                    <h1 class="text-lg font-semibold text-gray-800 ml-4">Detalhes da Lista</h1>
+                </header>
+                 <div class="p-6 flex-grow overflow-y-auto">
+                     <h2 class="font-bold text-gray-800 mb-4 text-xl">Compras da Semana</h2>
+                     <div class="space-y-4">
+                        <!-- Item Detalhado 1 -->
+                         <div class="bg-white p-4 rounded-lg shadow-sm">
+                             <div class="flex justify-between items-start">
+                                 <div>
+                                     <p class="font-bold text-gray-800">Arroz Parboilizado 1kg</p>
+                                     <p class="text-sm text-gray-500">Quantidade: 2</p>
+                                 </div>
+                                 <button class="text-gray-500"><i class="fas fa-edit"></i></button>
+                             </div>
+                             <div class="mt-3 border-t pt-3 space-y-2 text-sm">
+                                 <p class="flex justify-between text-green-600 font-semibold"><span><i class="fas fa-check-circle"></i> Giassi:</span> <span>R$ 5,90</span></p>
+                                 <p class="flex justify-between text-gray-600"><span>Angeloni:</span> <span>R$ 6,50</span></p>
+                                 <p class="flex justify-between text-gray-600"><span>Cooper:</span> <span>R$ 6,80</span></p>
+                             </div>
+                         </div>
+                        <!-- Item Detalhado 2 -->
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                             <div class="flex justify-between items-start">
+                                 <div>
+                                     <p class="font-bold text-gray-800">Leite Integral 1L</p>
+                                     <p class="text-sm text-gray-500">Quantidade: 6</p>
+                                 </div>
+                                 <button class="text-gray-500"><i class="fas fa-edit"></i></button>
+                             </div>
+                             <div class="mt-3 border-t pt-3 space-y-2 text-sm">
+                                 <p class="flex justify-between text-green-600 font-semibold"><span><i class="fas fa-check-circle"></i> Giassi:</span> <span>R$ 3,95</span></p>
+                                 <p class="flex justify-between text-gray-600"><span>Angeloni:</span> <span>R$ 4,15</span></p>
+                                 <p class="flex justify-between text-gray-600"><span>Cooper:</span> <span>R$ 4,25</span></p>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+            </div>
+
+            <!-- 9. Tela de Atualização de Preços -->
+             <div id="screen-update-price" class="screen bg-gray-50 flex-col">
+                <header class="bg-white shadow-sm p-4 flex items-center">
+                    <button onclick="navigate('screen-dashboard')" class="text-gray-600"><i class="fas fa-arrow-left"></i></button>
+                    <h1 class="text-lg font-semibold text-gray-800 ml-4">Atualizar Preços</h1>
+                </header>
+                 <div class="p-6 flex-grow overflow-y-auto">
+                     <div class="relative mb-4">
+                         <input type="text" placeholder="Buscar produto para atualizar..." class="w-full p-3 bg-white border border-gray-300 rounded-lg pr-10">
+                         <i class="fas fa-search absolute right-3 top-3.5 text-gray-400"></i>
+                     </div>
+                     <div class="space-y-3">
+                         <div class="bg-white p-3 rounded-lg shadow-sm">
+                            <p class="font-semibold">Arroz Parboilizado 1kg (Giassi)</p>
+                             <p class="text-xs text-gray-500 mb-2">Última atualização: 10/06/2025</p>
+                             <div class="flex gap-2">
+                                <input type="number" placeholder="Novo valor" class="w-full p-2 border rounded-md">
+                                <button class="bg-indigo-600 text-white px-4 rounded-md font-semibold">OK</button>
+                             </div>
+                         </div>
+                        <div class="bg-white p-3 rounded-lg shadow-sm">
+                            <p class="font-semibold">Feijão Carioca 1kg (Angeloni)</p>
+                             <p class="text-xs text-gray-500 mb-2">Última atualização: 08/06/2025</p>
+                             <div class="flex gap-2">
+                                <input type="number" placeholder="Novo valor" class="w-full p-2 border rounded-md">
+                                <button class="bg-indigo-600 text-white px-4 rounded-md font-semibold">OK</button>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+            </div>
+
+            <!-- Telas Futuras (Placeholder) -->
+            <div id="screen-history" class="screen bg-gray-50 flex-col">
+                <header class="bg-white shadow-sm p-4 flex items-center">
+                    <button onclick="navigate('screen-dashboard')" class="text-gray-600"><i class="fas fa-arrow-left"></i></button>
+                    <h1 class="text-lg font-semibold text-gray-800 ml-4">Histórico de Listas</h1>
+                </header>
+                <div class="flex-grow flex flex-col items-center justify-center text-center p-8">
+                    <i class="fas fa-tools text-4xl text-gray-400 mb-4"></i>
+                    <h2 class="text-xl font-bold text-gray-700">Em Construção</h2>
+                    <p class="text-gray-500 mt-2">Aqui você poderá ver suas listas salvas, com data e economia registrada, e poderá repeti-las com um clique!</p>
+                </div>
+            </div>
+            <div id="screen-rating" class="screen bg-gray-50 flex-col">
+                <header class="bg-white shadow-sm p-4 flex items-center">
+                    <button onclick="navigate('screen-dashboard')" class="text-gray-600"><i class="fas fa-arrow-left"></i></button>
+                    <h1 class="text-lg font-semibold text-gray-800 ml-4">Avaliação de Mercado</h1>
+                </header>
+                <div class="flex-grow flex flex-col items-center justify-center text-center p-8">
+                    <i class="fas fa-tools text-4xl text-gray-400 mb-4"></i>
+                    <h2 class="text-xl font-bold text-gray-700">Em Construção</h2>
+                    <p class="text-gray-500 mt-2">Em breve, você poderá avaliar os mercados com estrelas e comentários.</p>
+                </div>
+            </div>
+             <div id="screen-promotions" class="screen bg-gray-50 flex-col">
+                <header class="bg-white shadow-sm p-4 flex items-center">
+                    <button onclick="navigate('screen-dashboard')" class="text-gray-600"><i class="fas fa-arrow-left"></i></button>
+                    <h1 class="text-lg font-semibold text-gray-800 ml-4">Promoções</h1>
+                </header>
+                <div class="flex-grow flex flex-col items-center justify-center text-center p-8">
+                    <i class="fas fa-tools text-4xl text-gray-400 mb-4"></i>
+                    <h2 class="text-xl font-bold text-gray-700">Em Construção</h2>
+                    <p class="text-gray-500 mt-2">Aguarde! Logo você verá as melhores ofertas dos supermercados por aqui.</p>
+                </div>
+            </div>
+             <div id="screen-ranking" class="screen bg-gray-50 flex-col">
+                <header class="bg-white shadow-sm p-4 flex items-center">
+                    <button onclick="navigate('screen-dashboard')" class="text-gray-600"><i class="fas fa-arrow-left"></i></button>
+                    <h1 class="text-lg font-semibold text-gray-800 ml-4">Ranking de Mercados</h1>
+                </header>
+                 <div class="flex-grow flex flex-col items-center justify-center text-center p-8">
+                    <i class="fas fa-tools text-4xl text-gray-400 mb-4"></i>
+                    <h2 class="text-xl font-bold text-gray-700">Em Construção</h2>
+                    <p class="text-gray-500 mt-2">Uma lista dos mercados mais baratos da semana/mês, com base nos dados de todos os usuários, estará disponível em breve.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        // Simula o carregamento inicial e navega para a tela de login
+        setTimeout(() => {
+            navigate('screen-login');
+        }, 2500);
+
+        function navigate(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function toggleAuth(formToShow) {
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+            if (formToShow === 'register') {
+                loginForm.classList.add('hidden');
+                registerForm.classList.remove('hidden');
+            } else {
+                loginForm.classList.remove('hidden');
+                registerForm.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>

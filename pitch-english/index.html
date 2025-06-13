@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSystem App Mockup</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Light grayish-blue background */
+        }
+        .screen {
+            display: none; /* Hidden by default */
+            min-height: 100vh; /* Full viewport height */
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .screen.active {
+            display: flex; /* Show active screen */
+            flex-direction: column;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .logo-text {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2E7D32; /* Dark Green */
+        }
+        .btn-primary {
+            background-color: #4CAF50; /* Green */
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #388E3C; /* Darker Green */
+        }
+        .btn-secondary {
+            background-color: #607D8B; /* Blue Grey */
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background-color: #455A64; /* Darker Blue Grey */
+        }
+        .btn-ai {
+            background-color: #FFC107; /* Amber for AI features */
+            color: #333;
+            transition: background-color 0.3s ease;
+        }
+        .btn-ai:hover {
+            background-color: #FFA000; /* Darker Amber */
+        }
+        .btn-outline {
+            border: 2px solid #4CAF50;
+            color: #4CAF50;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .btn-outline:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .bottom-nav {
+            background-color: #FFFFFF;
+            border-top: 1px solid #CFD8DC; /* Light Grey Border */
+        }
+        .nav-item {
+            color: #757575; /* Grey */
+            transition: color 0.3s ease;
+        }
+        .nav-item.active, .nav-item:hover {
+            color: #4CAF50; /* Green */
+        }
+        .map-placeholder {
+            background-color: #A9A9A9; /* Dark Grey background for fallback */
+            background-size: cover;
+            background-position: center;
+            height: calc(100vh - 56px - 56px); 
+        }
+        .pin {
+            width: 28px; 
+            height: 38px; 
+            border-radius: 50% 50% 50% 0;
+            position: absolute;
+            transform: rotate(-45deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+            cursor: pointer;
+        }
+        .pin i {
+            transform: rotate(45deg);
+            color: white;
+            font-size: 0.8rem;
+            text-shadow: 0 0 2px rgba(0,0,0,0.5);
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #888; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .floating-btn {
+            position: fixed;
+            bottom: 75px;
+            right: 20px;
+            z-index: 30;
+        }
+        .legend {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 0.75rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 25;
+            max-width: 180px;
+        }
+        .legend h4 { font-weight: 600; margin-bottom: 0.5rem; color: #333; font-size: 0.875rem; }
+        .legend ul li { display: flex; align-items: center; margin-bottom: 0.25rem; font-size: 0.75rem; color: #555; }
+        .legend ul li .pin-color { width: 12px; height: 12px; border-radius: 50%; margin-right: 0.5rem; border: 1px solid rgba(0,0,0,0.2); }
+        .legend ul li i { margin-right: 0.5rem; width: 12px; text-align: center; }
+        .loading-spinner {
+            border: 4px solid #f3f3f3; /* Light grey */
+            border-top: 4px solid #4CAF50; /* Green */
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .ai-suggestion-box {
+            background-color: #FFF9C4; /* Light yellow for AI suggestions */
+            border: 1px solid #FFEB3B; /* Yellow border */
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #5D4037; /* Brownish text */
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <div id="loginScreen" class="screen active p-6 justify-center items-center bg-gradient-to-br from-green-100 to-blue-100">
+        <div class="text-center w-full max-w-sm">
+            <div class="logo-text mb-10">EcoSystem</div>
+            <input type="email" placeholder="Email" class="w-full p-3 mb-4 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none">
+            <input type="password" placeholder="Senha" class="w-full p-3 mb-6 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none">
+            <button onclick="navigateTo('mapScreen')" class="w-full btn-primary font-semibold py-3 rounded-lg shadow-md mb-4">Entrar</button>
+            <a href="#" onclick="navigateTo('mapScreen')" class="text-green-600 hover:text-green-800 font-medium">Cadastrar-se</a>
+             <p class="mt-8 text-xs text-gray-500">
+                Ao continuar, você concorda com nossos <a href="#" class="underline">Termos de Serviço</a> e <a href="#" class="underline">Política de Privacidade</a>.
+            </p>
+        </div>
+    </div>
+
+    <div id="mapScreen" class="screen">
+        <header class="bg-white p-4 shadow-md flex flex-col sm:flex-row justify-between items-center sticky top-0 z-20">
+            <h1 class="text-xl font-semibold text-green-700 mb-2 sm:mb-0">EcoMapa - Blumenau</h1>
+            <div class="flex flex-wrap items-center space-x-0 sm:space-x-3 space-y-2 sm:space-y-0">
+                <select id="mapCategoryFilter" class="p-2 border border-gray-300 rounded-lg text-sm focus:ring-green-500 focus:border-green-500 w-full sm:w-auto">
+                    <option value="todos">Todas Categorias</option>
+                    <option value="lixoes">Lixões</option>
+                    <option value="esgoto">Esgoto a Céu Aberto</option>
+                    <option value="queima_lixo">Queima de Lixo</option>
+                    <option value="falta_areas_verdes">Falta de Áreas Verdes</option>
+                    <option value="poluicao_ar">Poluição do Ar</option>
+                    <option value="poluicao_sonora">Poluição Sonora</option>
+                    <option value="descarte_irregular">Descarte Irregular</option>
+                    <option value="alagamentos">Alagamentos</option>
+                </select>
+                <select class="p-2 border border-gray-300 rounded-lg text-sm focus:ring-green-500 focus:border-green-500 w-full sm:w-auto">
+                    <option>Todos Status</option>
+                    <option>Pendente</option>
+                    <option>Em Progresso</option>
+                    <option>Resolvido</option>
+                </select>
+                <button class="text-gray-600 hover:text-green-600 p-2 border border-gray-300 rounded-lg bg-gray-50 hover:bg-gray-100 sm:ml-2">
+                    <i class="fas fa-search"></i> <span class="hidden sm:inline">Filtrar</span>
+                </button>
+            </div>
+        </header>
+
+        <main class="flex-grow relative">
+            <div class="map-placeholder w-full h-full relative">
+                <!-- Imagem estática do mapa -->
+                <img src="Screenshot 2025-06-12 085209.png" alt="Mapa de Blumenau" class="aquiimagem w-full h-full object-cover">
+                
+                <!-- Os pins e a legenda irão sobrepor a imagem -->
+                <div class="pin bg-stone-700" style="top: 20%; left: 30%;" title="Lixão"><i class="fas fa-dumpster"></i></div>
+                <div class="pin bg-teal-700" style="top: 35%; left: 55%;" title="Esgoto a Céu Aberto"><i class="fas fa-tint-slash"></i></div>
+                <div class="pin bg-orange-500" style="top: 50%; left: 25%;" title="Queima de Lixo"><i class="fas fa-fire"></i></div>
+                <div class="pin bg-lime-500" style="top: 60%; left: 70%;" title="Falta de Áreas Verdes"><i class="fas fa-tree"></i></div>
+                <div class="pin bg-slate-500" style="top: 25%; left: 75%;" title="Poluição do Ar"><i class="fas fa-smog"></i></div>
+                <div class="pin bg-purple-500" style="top: 70%; left: 40%;" title="Poluição Sonora"><i class="fas fa-volume-up"></i></div>
+                <div class="pin bg-yellow-400" style="top: 45%; left: 45%;" title="Descarte Irregular"><i class="fas fa-trash-alt"></i></div>
+                <div class="pin bg-sky-500" style="top: 75%; left: 60%;" title="Alagamentos"><i class="fas fa-house-water"></i></div>
+                <div class="pin bg-sky-500" style="top: 68%; left: 15%;" title="Alagamentos"><i class="fas fa-water"></i></div>
+                
+                <div class="legend">
+                    <h4>Legenda:</h4>
+                    <ul>
+                        <li><span class="pin-color bg-stone-700"></span><i class="fas fa-dumpster text-stone-700"></i> Lixões</li>
+                        <li><span class="pin-color bg-teal-700"></span><i class="fas fa-tint-slash text-teal-700"></i> Esgoto</li>
+                        <li><span class="pin-color bg-orange-500"></span><i class="fas fa-fire text-orange-500"></i> Queima</li>
+                        <li><span class="pin-color bg-lime-500"></span><i class="fas fa-tree text-lime-500"></i> Áreas Verdes</li>
+                        <li><span class="pin-color bg-slate-500"></span><i class="fas fa-smog text-slate-500"></i> Poluição do Ar</li>
+                        <li><span class="pin-color bg-purple-500"></span><i class="fas fa-volume-up text-purple-500"></i> Poluição Sonora</li>
+                        <li><span class="pin-color bg-yellow-400"></span><i class="fas fa-trash-alt text-yellow-400"></i> Descarte</li>
+                        <li><span class="pin-color bg-sky-500"></span><i class="fas fa-water text-sky-500"></i> Alagamentos</li>
+                    </ul>
+                </div>
+            </div>
+            <button onclick="navigateTo('reportProblemScreen')" class="floating-btn btn-primary p-4 rounded-full shadow-lg hover:bg-green-600">
+                <i class="fas fa-plus text-xl"></i>
+                <span class="sr-only">Reportar Problema</span>
+            </button>
+        </main>
+
+        <nav class="bottom-nav p-3 flex justify-around items-center sticky bottom-0 z-20">
+            <button onclick="navigateTo('mapScreen')" class="nav-item active flex flex-col items-center text-center w-1/4">
+                <i class="fas fa-map-marked-alt text-2xl mb-1"></i><span class="text-xs">Mapa</span>
+            </button>
+            <button onclick="navigateTo('missionsScreen')" class="nav-item flex flex-col items-center text-center w-1/4">
+                <i class="fas fa-flag-checkered text-2xl mb-1"></i><span class="text-xs">Missões</span>
+            </button>
+            <button onclick="navigateTo('rankingScreen')" class="nav-item flex flex-col items-center text-center w-1/4">
+                <i class="fas fa-trophy text-2xl mb-1"></i><span class="text-xs">Ranking</span>
+            </button>
+            <button onclick="navigateTo('profileScreen')" class="nav-item flex flex-col items-center text-center w-1/4">
+                <i class="fas fa-user-circle text-2xl mb-1"></i><span class="text-xs">Perfil</span>
+            </button>
+        </nav>
+    </div>
+
+    <div id="reportProblemScreen" class="screen p-0">
+        <header class="bg-white p-4 shadow-md flex items-center sticky top-0 z-10">
+            <button onclick="goBack()" class="text-green-600 mr-4"><i class="fas fa-arrow-left text-xl"></i></button>
+            <h1 class="text-xl font-semibold text-green-700">Reportar Problema</h1>
+        </header>
+        <main class="flex-grow p-6 overflow-y-auto bg-gray-50">
+            <div class="card">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Foto do Problema</label>
+                <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                    <div class="space-y-1 text-center">
+                        <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true"><path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                        <div class="flex text-sm text-gray-600">
+                            <label for="file-upload" class="relative cursor-pointer bg-white rounded-md font-medium text-green-600 hover:text-green-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-green-500">
+                                <span>Carregar um arquivo</span><input id="file-upload" name="file-upload" type="file" class="sr-only">
+                            </label>
+                            <p class="pl-1">ou arraste e solte</p>
+                        </div>
+                        <p class="text-xs text-gray-500">PNG, JPG, GIF até 10MB</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <label for="reportCategory" class="block text-sm font-medium text-gray-700 mb-1">Categoria</label>
+                <select id="reportCategory" name="category" class="mt-1 block w-full p-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                    <option value="">Selecione uma categoria</option>
+                    <option value="lixoes">Lixões</option>
+                    <option value="esgoto">Esgoto a Céu Aberto</option>
+                    <option value="queima_lixo">Queima de Lixo</option>
+                    <option value="falta_areas_verdes">Falta de Áreas Verdes</option>
+                    <option value="poluicao_ar">Poluição do Ar</option>
+                    <option value="poluicao_sonora">Poluição Sonora</option>
+                    <option value="descarte_irregular">Descarte Irregular</option>
+                    <option value="alagamentos">Alagamentos</option>
+                    <option value="outros">Outros</option>
+                </select>
+            </div>
+
+            <div class="card">
+                <div class="flex justify-between items-center mb-1">
+                    <label for="reportDescription" class="block text-sm font-medium text-gray-700">Descrição</label>
+                    <button id="generateDescriptionBtn" onclick="generateAIDescription()" class="btn-ai text-xs font-semibold py-1 px-2 rounded-md flex items-center">
+                        <span class="mr-1">✨</span> Gerar com IA
+                    </button>
+                </div>
+                <textarea id="reportDescription" name="description" rows="4" class="mt-1 shadow-sm focus:ring-green-500 focus:border-green-500 block w-full sm:text-sm border border-gray-300 rounded-md p-3" placeholder="Descreva o problema em detalhes..."></textarea>
+                <div id="descriptionLoading" class="hidden mt-2 text-sm text-gray-600 flex items-center"><div class="loading-spinner"></div>Gerando sugestão...</div>
+            </div>
+
+            <div class="card">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Localização GPS</label>
+                <div class="mt-1 p-3 border border-gray-300 rounded-md bg-gray-50 text-sm text-gray-600">
+                    <i class="fas fa-map-marker-alt text-green-500 mr-2"></i> Latitude: -26.8726, Longitude: -49.0938 (Automático)
+                </div>
+                <button class="mt-2 text-sm text-green-600 hover:text-green-800">Ajustar Localização Manualmente</button>
+            </div>
+
+            <button onclick="submitReport()" class="w-full btn-primary font-semibold py-3 rounded-lg shadow-md mt-4 mb-6">Enviar Reporte</button>
+        </main>
+    </div>
+
+    <div id="occurrenceDetailScreen" class="screen p-0">
+        <header class="bg-white p-4 shadow-md flex items-center sticky top-0 z-10">
+            <button onclick="goBack()" class="text-green-600 mr-4"><i class="fas fa-arrow-left text-xl"></i></button>
+            <h1 class="text-xl font-semibold text-green-700">Detalhes da Ocorrência</h1>
+        </header>
+        <main class="flex-grow p-6 overflow-y-auto bg-gray-50">
+            <div class="card">
+                <img id="occurrenceImage" src="https://placehold.co/600x300/CCCCCC/757575?text=Foto+do+Problema" alt="Foto do Problema" class="w-full h-48 object-cover rounded-md mb-4">
+                <h2 id="occurrenceTitle" class="text-2xl font-bold text-gray-800 mb-2">Título da Ocorrência</h2>
+                <p id="occurrenceLocation" class="text-gray-600 mb-1"><i class="fas fa-map-marker-alt text-green-500 mr-2"></i> Localização</p>
+                <p class="text-gray-600 mb-4"><i class="fas fa-calendar-alt text-green-500 mr-2"></i> Reportado em: 29/05/2025</p>
+
+                <div class="mb-4">
+                    <span class="text-sm font-medium text-gray-700">Status:</span>
+                    <span id="occurrenceStatus" class="px-3 py-1 text-xs font-semibold rounded-full bg-yellow-200 text-yellow-800">Pendente</span>
+                </div>
+
+                <p id="occurrenceDescriptionDetail" class="text-gray-700 mb-4 leading-relaxed">
+                    Descrição detalhada do problema ambiental reportado.
+                </p>
+                <button id="volunteerButton" class="w-full btn-primary font-semibold py-3 rounded-lg shadow-md mb-4">
+                    <i class="fas fa-hands-helping mr-2"></i> Me Voluntariar para Resolver
+                </button>
+                <button id="generateActionPlanBtn" onclick="generateAIActionPlan()" class="w-full btn-ai font-semibold py-3 rounded-lg shadow-md mb-4 flex items-center justify-center hidden">
+                    <span class="mr-1">✨</span> Sugerir Plano de Ação com IA
+                </button>
+                <div id="actionPlanLoading" class="hidden mt-2 text-sm text-gray-600 flex items-center justify-center"><div class="loading-spinner"></div>Gerando plano de ação...</div>
+                <div id="aiActionPlanBox" class="ai-suggestion-box hidden">
+                    <h4 class="font-semibold mb-2 text-md">Plano de Ação Sugerido pela IA:</h4>
+                    <p id="aiActionPlanText"></p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Comentários e Chat de Voluntários</h3>
+                <div class="space-y-3">
+                    <div class="p-3 bg-gray-100 rounded-lg"><p class="text-sm font-semibold text-gray-700">Maria Silva</p><p class="text-xs text-gray-500">1 hora atrás</p><p class="text-sm text-gray-600 mt-1">Já organizei um grupo, vamos limpar no sábado!</p></div>
+                    <div class="p-3 bg-gray-100 rounded-lg"><p class="text-sm font-semibold text-gray-700">João Souza</p><p class="text-xs text-gray-500">30 minutos atrás</p><p class="text-sm text-gray-600 mt-1">Ótimo, Maria! Posso levar sacos de lixo.</p></div>
+                </div>
+                <textarea class="mt-4 w-full p-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500" rows="2" placeholder="Adicionar um comentário..."></textarea>
+                <button class="mt-2 btn-secondary px-4 py-2 rounded-lg text-sm font-medium">Enviar Comentário</button>
+            </div>
+        </main>
+    </div>
+
+    <div id="profileScreen" class="screen p-0">
+        <header class="bg-white p-4 shadow-md flex items-center sticky top-0 z-10">
+             <button onclick="navigateTo('mapScreen')" class="text-green-600 mr-4"><i class="fas fa-arrow-left text-xl"></i></button>
+            <h1 class="text-xl font-semibold text-green-700">Meu Perfil</h1>
+            <button class="ml-auto text-green-600 hover:text-green-800"><i class="fas fa-edit"></i> Editar</button>
+        </header>
+        <main class="flex-grow p-6 overflow-y-auto bg-gradient-to-b from-green-50 to-blue-50">
+            <div class="card text-center">
+                <img src="https://placehold.co/100x100/A5D6A7/333333?text=User" alt="Foto do Usuário" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-green-500">
+                <h2 class="text-2xl font-bold text-gray-800">Carlos Ambientalista</h2>
+                <p class="text-gray-600">carlos.ambientalista@email.com</p>
+                <div class="mt-4 flex justify-center space-x-6">
+                    <div><p class="text-2xl font-bold text-green-600">1250</p><p class="text-sm text-gray-500">Pontos</p></div>
+                    <div><p class="text-2xl font-bold text-green-600">Nível 5</p><p class="text-sm text-gray-500">Guardião da Natureza</p></div>
+                </div>
+            </div>
+            <div class="card">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Ocorrências Reportadas (12)</h3>
+                <ul class="space-y-3">
+                    <li class="p-3 bg-gray-100 rounded-lg flex justify-between items-center cursor-pointer hover:bg-gray-200" onclick="navigateToOccurrenceDetailFromProfile('Descarte irregular de entulho', 'Rua das Palmeiras', 'Resolvido', 'Detalhes do descarte...')"><div><p class="font-medium text-gray-700">Descarte irregular de entulho</p><p class="text-xs text-gray-500">Rua das Palmeiras - <span class="text-green-600 font-semibold">Resolvido</span></p></div><i class="fas fa-chevron-right text-gray-400"></i></li>
+                    <li class="p-3 bg-gray-100 rounded-lg flex justify-between items-center cursor-pointer hover:bg-gray-200" onclick="navigateToOccurrenceDetailFromProfile('Foco de queimada', 'Serra Azul', 'Pendente', 'Fumaça vista na região da Serra Azul...')"><div><p class="font-medium text-gray-700">Foco de queimada</p><p class="text-xs text-gray-500">Serra Azul - <span class="text-yellow-600 font-semibold">Pendente</span></p></div><i class="fas fa-chevron-right text-gray-400"></i></li>
+                </ul><button class="mt-3 text-sm text-green-600 hover:text-green-800 w-full text-left">Ver todas as reportadas</button>
+            </div>
+            <div class="card">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Ocorrências Resolvidas (8)</h3>
+                 <ul class="space-y-3"><li class="p-3 bg-gray-100 rounded-lg flex justify-between items-center"><div><p class="font-medium text-gray-700">Limpeza da Praça Central</p><p class="text-xs text-gray-500">Participou como voluntário</p></div><i class="fas fa-check-circle text-green-500"></i></li></ul>
+                 <button class="mt-3 text-sm text-green-600 hover:text-green-800 w-full text-left">Ver todas as resolvidas</button>
+            </div>
+        </main>
+         <nav class="bottom-nav p-3 flex justify-around items-center sticky bottom-0 z-20">
+            <button onclick="navigateTo('mapScreen')" class="nav-item flex flex-col items-center text-center w-1/4"><i class="fas fa-map-marked-alt text-2xl mb-1"></i><span class="text-xs">Mapa</span></button>
+            <button onclick="navigateTo('missionsScreen')" class="nav-item flex flex-col items-center text-center w-1/4"><i class="fas fa-flag-checkered text-2xl mb-1"></i><span class="text-xs">Missões</span></button>
+            <button onclick="navigateTo('rankingScreen')" class="nav-item flex flex-col items-center text-center w-1/4"><i class="fas fa-trophy text-2xl mb-1"></i><span class="text-xs">Ranking</span></button>
+            <button onclick="navigateTo('profileScreen')" class="nav-item active flex flex-col items-center text-center w-1/4"><i class="fas fa-user-circle text-2xl mb-1"></i><span class="text-xs">Perfil</span></button>
+        </nav>
+    </div>
+
+    <div id="missionsScreen" class="screen p-0">
+        <header class="bg-white p-4 shadow-md flex items-center sticky top-0 z-10">
+             <button onclick="navigateTo('mapScreen')" class="text-green-600 mr-4"><i class="fas fa-arrow-left text-xl"></i></button>
+            <h1 class="text-xl font-semibold text-green-700">Missões Ecológicas</h1>
+        </header>
+        <main class="flex-grow p-6 overflow-y-auto bg-gray-50">
+            <div class="card"><img src="https://placehold.co/600x200/81C784/FFFFFF?text=Missão:+Limpeza+do+Parque" alt="Missão Limpeza do Parque" class="w-full h-40 object-cover rounded-md mb-4"><h2 class="text-xl font-bold text-gray-800 mb-2">Mutirão de Limpeza no Parque Municipal</h2><p class="text-sm text-gray-500 mb-1"><i class="fas fa-calendar-alt mr-1"></i> Prazo: 15/06/2025</p><p class="text-sm text-gray-500 mb-3"><i class="fas fa-users mr-1"></i> 15/50 Participantes</p><p class="text-gray-700 mb-4 leading-relaxed">Junte-se a nós para um grande mutirão de limpeza no Parque Municipal! Vamos remover lixo, plantar mudas e conscientizar a comunidade sobre a importância da preservação.</p><div class="flex items-center mb-3"><span class="text-sm font-medium text-gray-700 mr-2">Recompensa:</span><span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-700">+100 Pontos</span><span class="ml-2 px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-700">Medalha "Amigo do Parque"</span></div><button class="w-full btn-primary font-semibold py-3 rounded-lg shadow-md"><i class="fas fa-hiking mr-2"></i> Participar da Missão</button></div>
+            <div class="card"><img src="https://placehold.co/600x200/A1887F/FFFFFF?text=Missão:+Plantio+de+Árvores" alt="Missão Plantio de Árvores" class="w-full h-40 object-cover rounded-md mb-4"><h2 class="text-xl font-bold text-gray-800 mb-2">Plantio de Árvores Nativas</h2><p class="text-sm text-gray-500 mb-1"><i class="fas fa-calendar-alt mr-1"></i> Prazo: 30/06/2025</p><p class="text-sm text-gray-500 mb-3"><i class="fas fa-users mr-1"></i> 5/20 Participantes</p><p class="text-gray-700 mb-4 leading-relaxed">Ajude a reflorestar uma área degradada plantando árvores nativas. Contribua para a biodiversidade local e a qualidade do ar.</p><div class="flex items-center mb-3"><span class="text-sm font-medium text-gray-700 mr-2">Recompensa:</span><span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-700">+150 Pontos</span></div><button class="w-full btn-primary font-semibold py-3 rounded-lg shadow-md"><i class="fas fa-seedling mr-2"></i> Participar da Missão</button></div>
+            <div class="card"><h2 class="text-xl font-bold text-gray-800 mb-2">Desafio: Redução de Plástico</h2><p class="text-sm text-gray-500 mb-1"><i class="fas fa-calendar-alt mr-1"></i> Duração: 30 dias</p><p class="text-sm text-gray-500 mb-3"><i class="fas fa-users mr-1"></i> Participação individual</p><p class="text-gray-700 mb-4 leading-relaxed">Participe do desafio de reduzir o consumo de plástico descartável por 30 dias. Compartilhe suas dicas e conquistas!</p><div class="flex items-center mb-3"><span class="text-sm font-medium text-gray-700 mr-2">Recompensa:</span><span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-700">+50 Pontos</span><span class="ml-2 px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-700">Selo "Eco-Consciente"</span></div><button class="w-full btn-outline font-semibold py-3 rounded-lg"><i class="fas fa-recycle mr-2"></i> Aceitar Desafio</button></div>
+        </main>
+         <nav class="bottom-nav p-3 flex justify-around items-center sticky bottom-0 z-20">
+            <button onclick="navigateTo('mapScreen')" class="nav-item flex flex-col items-center text-center w-1/4"><i class="fas fa-map-marked-alt text-2xl mb-1"></i><span class="text-xs">Mapa</span></button>
+            <button onclick="navigateTo('missionsScreen')" class="nav-item active flex flex-col items-center text-center w-1/4"><i class="fas fa-flag-checkered text-2xl mb-1"></i><span class="text-xs">Missões</span></button>
+            <button onclick="navigateTo('rankingScreen')" class="nav-item flex flex-col items-center text-center w-1/4"><i class="fas fa-trophy text-2xl mb-1"></i><span class="text-xs">Ranking</span></button>
+            <button onclick="navigateTo('profileScreen')" class="nav-item flex flex-col items-center text-center w-1/4"><i class="fas fa-user-circle text-2xl mb-1"></i><span class="text-xs">Perfil</span></button>
+        </nav>
+    </div>
+
+    <div id="rankingScreen" class="screen p-0">
+        <header class="bg-white p-4 shadow-md flex items-center sticky top-0 z-10">
+             <button onclick="navigateTo('mapScreen')" class="text-green-600 mr-4"><i class="fas fa-arrow-left text-xl"></i></button>
+            <h1 class="text-xl font-semibold text-green-700">Ranking de Guardiões</h1>
+        </header>
+        <main class="flex-grow p-6 overflow-y-auto bg-gray-50">
+            <div class="card"><ul class="space-y-4">
+                <li class="flex items-center p-3 bg-yellow-100 border-2 border-yellow-400 rounded-lg shadow-sm"><span class="text-2xl font-bold text-yellow-600 mr-4">1º</span><img src="https://placehold.co/40x40/FBC02D/FFFFFF?text=U1" class="w-10 h-10 rounded-full mr-3 border-2 border-yellow-500" alt="Usuário 1"><div><p class="font-semibold text-yellow-700">Ana Protetora</p><p class="text-sm text-yellow-600">5870 Pontos</p></div><i class="fas fa-medal text-2xl text-yellow-500 ml-auto"></i></li>
+                <li class="flex items-center p-3 bg-slate-100 border-2 border-slate-400 rounded-lg shadow-sm"><span class="text-xl font-bold text-slate-600 mr-4">2º</span><img src="https://placehold.co/40x40/CFD8DC/FFFFFF?text=U2" class="w-10 h-10 rounded-full mr-3 border-2 border-slate-500" alt="Usuário 2"><div><p class="font-semibold text-slate-700">Beto Vigilante</p><p class="text-sm text-slate-600">5500 Pontos</p></div><i class="fas fa-award text-xl text-slate-500 ml-auto"></i></li>
+                <li class="flex items-center p-3 bg-orange-100 border-2 border-orange-400 rounded-lg shadow-sm"><span class="text-lg font-bold text-orange-600 mr-5">3º</span><img src="https://placehold.co/40x40/FFB74D/FFFFFF?text=U3" class="w-10 h-10 rounded-full mr-3 border-2 border-orange-500" alt="Usuário 3"><div><p class="font-semibold text-orange-700">Carlos Ambientalista</p><p class="text-sm text-orange-600">1250 Pontos</p></div><i class="fas fa-star text-lg text-orange-500 ml-auto"></i></li>
+                <li class="flex items-center p-3 bg-gray-50 rounded-lg"><span class="text-md font-bold text-gray-500 mr-5">4º</span><img src="https://placehold.co/40x40/E0E0E0/FFFFFF?text=U4" class="w-10 h-10 rounded-full mr-3" alt="Usuário 4"><div><p class="font-medium text-gray-700">Diana Verde</p><p class="text-sm text-gray-500">980 Pontos</p></div></li>
+                <li class="flex items-center p-3 bg-gray-50 rounded-lg"><span class="text-md font-bold text-gray-500 mr-4">5º</span><img src="https://placehold.co/40x40/E0E0E0/FFFFFF?text=U5" class="w-10 h-10 rounded-full mr-3" alt="Usuário 5"><div><p class="font-medium text-gray-700">Eduardo Eco</p><p class="text-sm text-gray-500">760 Pontos</p></div></li>
+            </ul></div>
+        </main>
+         <nav class="bottom-nav p-3 flex justify-around items-center sticky bottom-0 z-20">
+            <button onclick="navigateTo('mapScreen')" class="nav-item flex flex-col items-center text-center w-1/4"><i class="fas fa-map-marked-alt text-2xl mb-1"></i><span class="text-xs">Mapa</span></button>
+            <button onclick="navigateTo('missionsScreen')" class="nav-item flex flex-col items-center text-center w-1/4"><i class="fas fa-flag-checkered text-2xl mb-1"></i><span class="text-xs">Missões</span></button>
+            <button onclick="navigateTo('rankingScreen')" class="nav-item active flex flex-col items-center text-center w-1/4"><i class="fas fa-trophy text-2xl mb-1"></i><span class="text-xs">Ranking</span></button>
+            <button onclick="navigateTo('profileScreen')" class="nav-item flex flex-col items-center text-center w-1/4"><i class="fas fa-user-circle text-2xl mb-1"></i><span class="text-xs">Perfil</span></button>
+        </nav>
+    </div>
+
+    <div id="submissionModal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50 hidden p-4">
+        <div class="bg-white p-6 rounded-lg shadow-xl text-center max-w-sm w-full">
+            <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4"><i class="fas fa-check text-green-600 text-2xl"></i></div>
+            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-2">Reporte Enviado!</h3>
+            <p class="text-sm text-gray-600 mb-4">Obrigado por sua contribuição para um EcoSystema mais saudável!</p>
+            <button onclick="closeModalAndNavigate('mapScreen')" class="btn-primary font-semibold py-2 px-4 rounded-lg shadow-md">Ok</button>
+        </div>
+    </div>
+
+    <div id="aiErrorModal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50 hidden p-4">
+        <div class="bg-white p-6 rounded-lg shadow-xl text-center max-w-sm w-full">
+            <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4"><i class="fas fa-exclamation-triangle text-red-600 text-2xl"></i></div>
+            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-2">Erro na Geração IA</h3>
+            <p id="aiErrorMessage" class="text-sm text-gray-600 mb-4">Não foi possível gerar a sugestão no momento. Tente novamente mais tarde.</p>
+            <button onclick="document.getElementById('aiErrorModal').classList.add('hidden')" class="btn-secondary font-semibold py-2 px-4 rounded-lg shadow-md">Fechar</button>
+        </div>
+    </div>
+
+    <script>
+        let screenHistory = ['loginScreen']; 
+
+        const occurrenceDetailsData = {
+            "Lixão": { title: "Lixão a Céu Aberto", location: "Próximo ao Rio Itajaí-Açu, Blumenau", description: "Grande acúmulo de lixo doméstico e industrial descartado irregularmente, atraindo vetores e contaminando o solo.", image: "https://placehold.co/600x300/8D6E63/FFFFFF?text=Lixão" },
+            "Esgoto a Céu Aberto": { title: "Lançamento de Esgoto", location: "Córrego na Rua das Palmeiras, Blumenau", description: "Esgoto residencial sendo lançado diretamente em córrego, causando mau cheiro e poluição hídrica.", image: "https://placehold.co/600x300/4DB6AC/FFFFFF?text=Esgoto" },
+            "Queima de Lixo": { title: "Queima Ilegal de Lixo", location: "Terreno baldio, Bairro Garcia, Blumenau", description: "Moradores queimando lixo e vegetação seca, gerando fumaça tóxica e risco de incêndio.", image: "https://placehold.co/600x300/FF7043/FFFFFF?text=Queima+de+Lixo" },
+            "Falta de Áreas Verdes": { title: "Área Urbana Sem Arborização", location: "Centro Expandido de Blumenau", description: "Extensa área pavimentada com poucas árvores, contribuindo para ilhas de calor e baixa qualidade do ar.", image: "https://placehold.co/600x300/AED581/FFFFFF?text=Falta+Área+Verde" },
+            "Poluição do Ar": { title: "Emissão de Poluentes Industriais", location: "Zona Industrial Norte, Blumenau", description: "Fumaça densa e com forte odor sendo emitida por chaminé industrial, afetando a qualidade do ar na vizinhança.", image: "https://placehold.co/600x300/90A4AE/FFFFFF?text=Poluição+do+Ar" },
+            "Poluição Sonora": { title: "Ruído Excessivo de Construção", location: "Obras na Rua XV de Novembro, Blumenau", description: "Maquinário pesado operando em horários inadequados, causando transtorno sonoro para moradores e comerciantes.", image: "https://placehold.co/600x300/BA68C8/FFFFFF?text=Poluição+Sonora" },
+            "Descarte Irregular": { title: "Descarte de Entulho em Terreno", location: "Final da Rua Testo Salto, Blumenau", description: "Grande quantidade de entulho de construção e móveis velhos descartados em terreno próximo a uma área de preservação.", image: "https://placehold.co/600x300/FFCA28/FFFFFF?text=Descarte+Irregular" },
+            "Alagamentos": { title: "Ponto Crítico de Alagamento", location: "Cruzamento da Rua Sete com a Alameda Rio Branco", description: "Área baixa que alaga frequentemente durante chuvas intensas, causando transtornos e prejuízos.", image: "https://placehold.co/600x300/4FC3F7/FFFFFF?text=Alagamento" }
+        };
+
+        function navigateTo(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
+            const targetScreen = document.getElementById(screenId);
+            if (targetScreen) targetScreen.classList.add('active');
+            else {
+                console.error("Screen not found:", screenId);
+                document.getElementById('mapScreen').classList.add('active');
+            }
+
+            document.querySelectorAll('.bottom-nav .nav-item').forEach(item => item.classList.remove('active'));
+            const navButtons = { 'mapScreen': 'mapScreen', 'missionsScreen': 'missionsScreen', 'rankingScreen': 'rankingScreen', 'profileScreen': 'profileScreen' };
+            const activeNavButton = document.querySelector(`.bottom-nav button[onclick*="${navButtons[screenId]}"]`);
+            if (activeNavButton) activeNavButton.classList.add('active');
+            
+            if (screenHistory[screenHistory.length - 1] !== screenId) screenHistory.push(screenId);
+            window.scrollTo(0, 0);
+
+            if (screenId === 'occurrenceDetailScreen') {
+                const status = document.getElementById('occurrenceStatus').textContent;
+                const generatePlanBtn = document.getElementById('generateActionPlanBtn');
+                if (status.toLowerCase() === 'pendente') {
+                    generatePlanBtn.classList.remove('hidden');
+                } else {
+                    generatePlanBtn.classList.add('hidden');
+                    document.getElementById('aiActionPlanBox').classList.add('hidden'); 
+                }
+            }
+        }
+
+        function goBack() {
+            if (screenHistory.length > 1) {
+                screenHistory.pop(); 
+                const previousScreenId = screenHistory[screenHistory.length - 1];
+                const originalPushState = screenHistory.push; 
+                screenHistory.push = () => {}; 
+                navigateTo(previousScreenId);
+                screenHistory.push = originalPushState; 
+            } else {
+                navigateTo('mapScreen'); 
+            }
+        }
+        
+        function navigateToOccurrenceDetail(pinTitle) {
+            const details = occurrenceDetailsData[pinTitle] || occurrenceDetailsData["Lixão"]; 
+            if (details) {
+                document.getElementById('occurrenceImage').src = details.image;
+                document.getElementById('occurrenceTitle').textContent = details.title;
+                document.getElementById('occurrenceLocation').innerHTML = `<i class="fas fa-map-marker-alt text-green-500 mr-2"></i> ${details.location}`;
+                document.getElementById('occurrenceDescriptionDetail').textContent = details.description; 
+                document.getElementById('occurrenceStatus').textContent = "Pendente"; 
+                document.getElementById('occurrenceStatus').className = 'px-3 py-1 text-xs font-semibold rounded-full bg-yellow-200 text-yellow-800';
+            }
+            navigateTo('occurrenceDetailScreen');
+        }
+
+        function navigateToOccurrenceDetailFromProfile(title, location, status, description) {
+            document.getElementById('occurrenceImage').src = `https://placehold.co/600x300/BDBDBD/FFFFFF?text=${encodeURIComponent(title.substring(0,15))}`;
+            document.getElementById('occurrenceTitle').textContent = title;
+            document.getElementById('occurrenceLocation').innerHTML = `<i class="fas fa-map-marker-alt text-green-500 mr-2"></i> ${location}`;
+            document.getElementById('occurrenceDescriptionDetail').textContent = description; 
+            const statusSpan = document.getElementById('occurrenceStatus');
+            statusSpan.textContent = status;
+            statusSpan.className = 'px-3 py-1 text-xs font-semibold rounded-full'; 
+            if (status === 'Pendente') statusSpan.classList.add('bg-yellow-200', 'text-yellow-800');
+            else if (status === 'Resolvido') statusSpan.classList.add('bg-green-200', 'text-green-800');
+            else statusSpan.classList.add('bg-gray-200', 'text-gray-800');
+            navigateTo('occurrenceDetailScreen');
+        }
+
+        function submitReport() {
+            document.getElementById('submissionModal').classList.remove('hidden');
+            document.getElementById('reportCategory').value = '';
+            document.getElementById('reportDescription').value = '';
+        }
+
+        function closeModalAndNavigate(screenId) {
+            document.getElementById('submissionModal').classList.add('hidden');
+            navigateTo(screenId);
+        }
+        
+        function showAIError(message) {
+            const errorMessageElement = document.getElementById('aiErrorMessage');
+            if (message) errorMessageElement.textContent = message;
+            else errorMessageElement.textContent = "Não foi possível processar a solicitação no momento. Tente novamente.";
+            document.getElementById('aiErrorModal').classList.remove('hidden');
+        }
+
+        const GEMINI_API_KEY = ""; 
+        const GEMINI_API_URL_FLASH = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+        async function callGeminiAPI(prompt) {
+            let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+            const payload = { contents: chatHistory };
+
+            try {
+                const response = await fetch(GEMINI_API_URL_FLASH, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error("Erro da API Gemini:", errorData);
+                    throw new Error(`Erro ${response.status}: ${errorData.error?.message || 'Falha ao chamar API'}`);
+                }
+
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    return result.candidates[0].content.parts[0].text;
+                } else {
+                    console.error("Resposta inesperada da API Gemini:", result);
+                    throw new Error("Resposta da IA não contém o texto esperado.");
+                }
+            } catch (error) {
+                console.error("Falha ao chamar a API Gemini:", error);
+                showAIError(error.message);
+                return null; 
+            }
+        }
+        
+        async function generateAIDescription() {
+            const categoryElement = document.getElementById('reportCategory');
+            const descriptionElement = document.getElementById('reportDescription');
+            const loadingElement = document.getElementById('descriptionLoading');
+            const generateBtn = document.getElementById('generateDescriptionBtn');
+
+            const category = categoryElement.options[categoryElement.selectedIndex].text;
+            if (!category || category === "Selecione uma categoria") {
+                showAIError("Por favor, selecione uma categoria primeiro.");
+                return;
+            }
+
+            loadingElement.classList.remove('hidden');
+            generateBtn.disabled = true;
+            descriptionElement.value = ""; 
+
+            const prompt = `Gere uma descrição detalhada para um problema ambiental da categoria "${category}" em Blumenau, SC. Inclua possíveis causas e impactos observados. Seja conciso e direto, em português brasileiro. Exemplo: "Observado grande acúmulo de lixo do tipo [detalhar tipo de lixo, se souber] na área X, causando [mau cheiro/risco à saúde/poluição visual]. Aparentemente, o descarte irregular ocorre devido a [possível causa]."`;
+            
+            const generatedText = await callGeminiAPI(prompt);
+
+            if (generatedText) {
+                descriptionElement.value = generatedText;
+            } else {
+                descriptionElement.value = "Não foi possível gerar a descrição. Por favor, tente novamente ou escreva manualmente.";
+            }
+            
+            loadingElement.classList.add('hidden');
+            generateBtn.disabled = false;
+        }
+
+        async function generateAIActionPlan() {
+            const occurrenceTitle = document.getElementById('occurrenceTitle').textContent;
+            const occurrenceDescription = document.getElementById('occurrenceDescriptionDetail').textContent; 
+            const loadingElement = document.getElementById('actionPlanLoading');
+            const planBox = document.getElementById('aiActionPlanBox');
+            const planTextElement = document.getElementById('aiActionPlanText');
+            const generateBtn = document.getElementById('generateActionPlanBtn');
+
+            if (!occurrenceTitle || !occurrenceDescription) {
+                 showAIError("Detalhes da ocorrência não encontrados para gerar o plano.");
+                return;
+            }
+
+            loadingElement.classList.remove('hidden');
+            generateBtn.disabled = true;
+            planBox.classList.add('hidden');
+
+            const prompt = `Sugira um plano de ação comunitário simples e prático, em português brasileiro, para resolver o seguinte problema ambiental em Blumenau: Título: "${occurrenceTitle}". Descrição: "${occurrenceDescription}". O plano deve incluir de 3 a 5 passos claros, materiais básicos que podem ser necessários e uma dica de segurança. Formato: lista numerada para os passos.`;
+
+            const generatedPlan = await callGeminiAPI(prompt);
+
+            if (generatedPlan) {
+                planTextElement.innerHTML = generatedPlan.replace(/\n/g, '<br>'); 
+                planBox.classList.remove('hidden');
+            } else {
+                planTextElement.textContent = "Não foi possível gerar o plano de ação.";
+                planBox.classList.remove('hidden'); 
+            }
+            
+            loadingElement.classList.add('hidden');
+            generateBtn.disabled = false;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            navigateTo('loginScreen'); 
+
+            document.querySelectorAll('#mapScreen .pin').forEach(pin => {
+                pin.addEventListener('click', () => {
+                    const pinTitle = pin.getAttribute('title');
+                    navigateToOccurrenceDetail(pinTitle);
+                });
+            });
+             // Atualiza o campo de localização na tela de reporte com as coordenadas fornecidas
+            const gpsLocationElement = document.querySelector('#reportProblemScreen .card div[class*="text-gray-600"]');
+            if (gpsLocationElement) {
+                gpsLocationElement.innerHTML = `<i class="fas fa-map-marker-alt text-green-500 mr-2"></i> Latitude: -26.8726, Longitude: -49.0938 (Automático)`;
+            }
+        });
+    </script>
+</body>
+</ht
