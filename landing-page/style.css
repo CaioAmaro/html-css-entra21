@@ -1,0 +1,208 @@
+body{
+    font-family: Arial, sans-serif;
+    background-color: #f3f8f4;
+}
+
+header {
+    background-color: #184d36;
+    color: #fff;
+}
+
+nav{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    align-items: center;
+}
+
+.nav-links,
+.nav-buttons{
+    display: flex;
+    gap: 10px;
+}
+
+.nav-links li {
+    margin: 0 0 0 20px;
+    padding: 5px 0;
+    font-size: 1rem;
+    color: #b7c9b0;
+    transition: color 0.3s, transform 0.3s;
+    cursor: pointer;
+}
+
+.nav-links li:hover,
+.nav-links li:focus {
+    color: #ffffff;
+    transform: translateX(5px) scale(1.05);
+    text-shadow: 0 2px 8px rgba(24,77,54,0.2);
+}
+
+.btn-login,
+.btn-cadastra-se {
+    color: #184d36;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-login:hover,
+.btn-login:focus,
+.btn-cadastra-se:hover,
+.btn-cadastra-se:focus {
+    background-color: #d6e5d8;
+    color: #184d36;
+    transition: background 0.3s, color 0.3s;
+}
+
+section {
+    margin: 30px auto;
+    padding: 40px 30px;
+    max-width: 900px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(24,77,54,0.08);
+    text-align: center;
+    transition: box-shadow 0.3s;
+}
+
+section:hover,
+section:focus-within {
+    box-shadow: 0 8px 32px rgba(24,77,54,0.15);
+}
+
+.sobre h1{
+    font-size: 2rem;
+    color: #184d36;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(24,77,54,0.1);
+}
+
+.btn-comece-agora{
+    margin-top: 30px;
+    background-color: #184d36;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+section {
+    padding: 40px 20px;
+    background-color: #eaf5ee;
+    border-radius: 10px;
+    max-width: 800px;
+    margin: 40px auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+section h2 {
+    text-align: center;
+    color: #184d36;
+    font-size: 28px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.vantagens-list {
+    list-style: none;
+    padding: 0;
+}
+
+.vantagens-list li {
+    background-color: #ffffff;
+    border-left: 5px solid #184d36;
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    font-size: 18px;
+    color: #2d3a32;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.vantagens-list li:hover {
+    background-color: #d6e5d8;
+    transform: translateX(5px);
+    cursor: pointer;
+}
+section {
+    padding: 40px 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    max-width: 800px;
+    margin: 40px auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+section h2 {
+    text-align: center;
+    color: #226644;
+    font-size: 28px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+section p {
+    text-align: center;
+    color: #4a5a4a;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+section ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+section ul li {
+    background-color: #f3f8f4;
+    padding: 15px 20px;
+    border-radius: 6px;
+    color: #2d3a32;
+    font-size: 18px;
+    transition: transform 0.3s, background-color 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+section ul li:hover {
+    background-color: #d6e5d8;
+    transform: translateX(5px);
+    cursor: pointer;
+}
+
+h2{
+    font-size: 1.5rem;
+    color: #184d36;
+    margin-bottom: 15px;
+}
+
+footer {
+    background-color: #184d36;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    position: relative;
+}
+
+footer ul{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+footer ul li {
+    margin: 10px;
+    list-style: none;
+    color: #b7c9b0;
+    font-size: 1rem;
+    transition: color 0.3s, transform 0.3s;
+}

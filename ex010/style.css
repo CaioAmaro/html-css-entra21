@@ -1,0 +1,19 @@
+button{
+    background-color: pink;
+}
+
+button:hover{
+    background-color: lightblue;
+}
+
+a:active{
+    color: green;
+}
+
+a:visited{
+    color: orange;
+}
+
+input:focus{
+    background-color: lightseagreen;
+}
